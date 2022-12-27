@@ -1,8 +1,14 @@
+import React from 'react';
 import { FormControl, IconButton, InputAdornment, OutlinedInput } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { createStyles, makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import React from 'react';
+
+interface Props {
+  searchQuery: string;
+  onChangeSearchQuery: (value: string) => void;
+  onGetWeatherForecast: () => void;
+}
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -17,7 +23,11 @@ const useStyles = makeStyles(() =>
   })
 );
 
-export const SearchBar = () => {
+export const SearchBar: React.FC<Props> = ({
+  searchQuery,
+  onChangeSearchQuery,
+  onGetWeatherForecast
+}) => {
   const { searchBarWrapper, searchBar } = useStyles();
 
   return (
@@ -25,9 +35,16 @@ export const SearchBar = () => {
       <FormControl className={searchBar} fullWidth variant="outlined">
         <OutlinedInput
           placeholder="Search city"
+          value={searchQuery}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              onGetWeatherForecast();
+            }
+          }}
+          onChange={(event) => onChangeSearchQuery(event.target.value)}
           endAdornment={
             <InputAdornment position="end">
-              <IconButton edge="end">
+              <IconButton edge="end" onClick={onGetWeatherForecast}>
                 <SearchIcon />
               </IconButton>
             </InputAdornment>

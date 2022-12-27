@@ -1,41 +1,53 @@
-import * as React from 'react';
+import React, { useState, useCallback } from 'react';
+import { loadWeatherForecast as getWeatherForecast } from './api/weatherForecast';
 import { Header } from './components/Header';
-import { SearchBar } from './components/SearchBar/SearchBar';
-// import Container from '@mui/material/Container';
-// import Typography from '@mui/material/Typography';
-// import Box from '@mui/material/Box';
-// import Link from '@mui/material/Link';
-// import ProTip from './ProTip';
-// import { Card } from '@mui/material';
-import { WeatherCard } from './components/WeatherCard';
-
-// function Copyright() {
-//   return (
-//     <Typography variant="body2" color="text.secondary" align="center">
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://mui.com/">
-//         Your Website
-//       </Link>{' '}
-//       {new Date().getFullYear()}.
-//     </Typography>
-//   );
-// }
+import { WeatherForecastsList } from './components/WeatherForecastsList';
+import { useStorage } from './hooks/useStorage';
+import { WeatherForecast } from './types/WeatherForecast';
 
 export default function App() {
+  const [weatherForecasts, setWeatherForecasts] = useStorage([], 'weatherForecasts');
+  const [selectedWeatherForecast, setSelectedWeatherForecast] = useState<WeatherForecast | null>(
+    null
+  );
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleChangeSearchQuery = useCallback((value: string) => {
+    setSearchQuery(value);
+  }, []);
+
+  const handleGetWeatherForecast = useCallback(async () => {
+    const newWeatherForecast = await getWeatherForecast(searchQuery.trim());
+    const isUnsuccessfulRequest =
+      newWeatherForecast.cod === '404' || newWeatherForecast.cod === '400';
+    const alreadyExists = weatherForecasts.some(
+      (weatherForecast: WeatherForecast) => weatherForecast.id === newWeatherForecast.id
+    );
+
+    setSearchQuery('');
+
+    if (isUnsuccessfulRequest) {
+      return;
+    }
+
+    if (alreadyExists) {
+      return;
+    }
+
+    setSelectedWeatherForecast(newWeatherForecast);
+    setWeatherForecasts([...weatherForecasts, newWeatherForecast]);
+  }, [searchQuery]);
+
+  console.log(selectedWeatherForecast);
+
   return (
-    // <Container maxWidth="sm">
-    //   <Box sx={{ my: 4 }}>
-    //     <Typography variant="h4" component="h1" gutterBottom>
-    //       Create React App example with TypeScript
-    //     </Typography>
-    //     <ProTip />
-    //     <Copyright />
-    //   </Box>
-    //   <Card variant="outlined">{'card'}</Card>
-    // </Container>
     <>
-      <Header />
-      <WeatherCard />
+      <Header
+        searchQuery={searchQuery}
+        onChangeSearchQuery={handleChangeSearchQuery}
+        onGetWeatherForecast={handleGetWeatherForecast}
+      />
+      <WeatherForecastsList weatherForecasts={weatherForecasts} />
     </>
   );
 }

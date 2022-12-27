@@ -1,32 +1,32 @@
-export interface GeneralWeatherInfo {
-  coord: WeatherCoord;
-  weather: WeatherInfo[];
+export interface WeatherForecast {
+  coord: WeatherForecastCoord;
+  weather: WeatherForecastInfo[];
   base: string;
-  main: WeatherMainInfo;
+  main: WeatherForecastMainInfo;
   visibility: number;
-  wind: WeatherWindInfo;
-  clouds: WeatherCloudsInfo;
+  wind: WeatherForecastWindInfo;
+  clouds: WeatherForecastCloudsInfo;
   dt: number;
-  sys: WeatherSys;
+  sys: WeatherForecastSys;
   timezone: number;
   id: number;
   name: string;
   cod: number;
 }
 
-interface WeatherCoord {
+interface WeatherForecastCoord {
   lon: number;
   lat: number;
 }
 
-interface WeatherInfo {
+interface WeatherForecastInfo {
   id: number;
   main: string;
   description: string;
   icon: string;
 }
 
-interface WeatherMainInfo {
+interface WeatherForecastMainInfo {
   temp: number;
   feels_like: number;
   temp_min: number;
@@ -37,17 +37,17 @@ interface WeatherMainInfo {
   grnd_level: number;
 }
 
-interface WeatherWindInfo {
+interface WeatherForecastWindInfo {
   speed: number;
   deg: number;
   gust: number;
 }
 
-interface WeatherCloudsInfo {
+interface WeatherForecastCloudsInfo {
   all: number;
 }
 
-interface WeatherSys {
+interface WeatherForecastSys {
   type: number;
   id: number;
   country: string;
