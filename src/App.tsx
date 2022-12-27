@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Header } from './components/Header';
+import { SearchBar } from './components/SearchBar/SearchBar';
 // import Container from '@mui/material/Container';
 // import Typography from '@mui/material/Typography';
 // import Box from '@mui/material/Box';
