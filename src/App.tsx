@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { loadWeatherForecast as getWeatherForecast } from './api/weatherForecast';
 import { Header } from './components/Header';
+import { WeatherForecastModal } from './components/WeatherForecastModal';
 import { WeatherForecastsList } from './components/WeatherForecastsList';
 import { useStorage } from './hooks/useStorage';
 import { WeatherForecast } from './types/WeatherForecast';
@@ -47,6 +48,7 @@ export default function App() {
         onChangeSearchQuery={handleChangeSearchQuery}
         onGetWeatherForecast={handleGetWeatherForecast}
       />
+      <WeatherForecastModal />
       <WeatherForecastsList weatherForecasts={weatherForecasts} />
     </>
   );
