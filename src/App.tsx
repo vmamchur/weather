@@ -16,7 +16,7 @@ export default function App() {
     setSearchQuery(value);
   }, []);
 
-  const handleGetWeatherForecast = useCallback(async () => {
+  const handleGetWeatherForecast = async () => {
     const newWeatherForecast = await getWeatherForecast(searchQuery.trim());
     const isUnsuccessfulRequest =
       newWeatherForecast.cod === '404' || newWeatherForecast.cod === '400';
@@ -36,7 +36,7 @@ export default function App() {
 
     setSelectedWeatherForecast(newWeatherForecast);
     setWeatherForecasts([...weatherForecasts, newWeatherForecast]);
-  }, [searchQuery]);
+  };
 
   console.log(selectedWeatherForecast);
 
