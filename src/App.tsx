@@ -93,7 +93,7 @@ export default function App() {
   const initialLoadWeatherForecasts = async () => {
     await Promise.all(
       weatherForecasts.map(async (weatherForecast: WeatherForecast) => {
-        handleUpdateWeatherForecast(weatherForecast);
+        await handleUpdateWeatherForecast(weatherForecast);
       })
     );
   };
