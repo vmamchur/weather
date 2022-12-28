@@ -5,21 +5,27 @@ import { WeatherForecast } from '../../types/WeatherForecast';
 import { WeatherForecastCard } from '../WeatherForecastCard';
 
 interface Props {
-  onSelectWeatherForecast: (weatherForecast: WeatherForecast) => void;
   weatherForecasts: WeatherForecast[];
+  onSelectWeatherForecast: (weatherForecast: WeatherForecast) => void;
+  onDeleteWeatherForecast: (weatherForecast: WeatherForecast) => void;
+  onUpdateWeatherForecast: (weatherForecast: WeatherForecast) => void;
 }
 
 export const WeatherForecastsList: React.FC<Props> = ({
+  weatherForecasts,
   onSelectWeatherForecast,
-  weatherForecasts
+  onDeleteWeatherForecast,
+  onUpdateWeatherForecast
 }) => (
   <Container>
     <Grid sx={{ mb: '60px' }} container spacing={4}>
       {weatherForecasts.map((weatherForecast) => (
         <Grid item key={weatherForecast.id}>
           <WeatherForecastCard
-            onSelectWeatherForecast={onSelectWeatherForecast}
             weatherForecast={weatherForecast}
+            onSelectWeatherForecast={onSelectWeatherForecast}
+            onDeleteWeatherForecast={onDeleteWeatherForecast}
+            onUpdateWeatherForecast={onUpdateWeatherForecast}
           />
         </Grid>
       ))}

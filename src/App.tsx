@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { loadWeatherForecast as getWeatherForecast } from './api/weatherForecast';
 import { Header } from './components/Header';
 import { WeatherForecastModal } from './components/WeatherForecastModal';
@@ -12,10 +12,6 @@ export default function App() {
     null
   );
   const [searchQuery, setSearchQuery] = useState('');
-
-  const handleChangeSearchQuery = useCallback((value: string) => {
-    setSearchQuery(value);
-  }, []);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,10 +23,11 @@ export default function App() {
     );
   };
 
-  const handleGetWeatherForecast = async () => {
-    setIsLoading(true);
-    setIsModalOpen(true);
+  const handleChangeSearchQuery = useCallback((value: string) => {
+    setSearchQuery(value);
+  }, []);
 
+  const handleGetWeatherForecast = async () => {
     const newWeatherForecast = await getWeatherForecast(searchQuery.trim());
     const isUnsuccessfulRequest =
       newWeatherForecast.cod === '404' || newWeatherForecast.cod === '400';
@@ -40,6 +37,9 @@ export default function App() {
     if (isUnsuccessfulRequest) {
       return;
     }
+
+    setIsLoading(true);
+    setIsModalOpen(true);
 
     setSelectedWeatherForecast(newWeatherForecast);
     setIsLoading(false);
@@ -63,22 +63,44 @@ export default function App() {
     }
   };
 
-  const handleDeleteWeatherForecast = () => {
-    if (selectedWeatherForecast) {
-      const alreadyExists = checkWeatherForecasts(selectedWeatherForecast);
+  const handleDeleteWeatherForecast = (weatherForecast: WeatherForecast) => {
+    const alreadyExists = checkWeatherForecasts(weatherForecast);
 
-      if (!alreadyExists) {
-        return;
-      }
-
-      const filteredWeatherForecasts = weatherForecasts.filter(
-        (weatherForecast: WeatherForecast) => weatherForecast.id !== selectedWeatherForecast.id
-      );
-
-      setWeatherForecasts(filteredWeatherForecasts);
-      setIsModalOpen(false);
+    if (!alreadyExists) {
+      return;
     }
+
+    const filteredWeatherForecasts = weatherForecasts.filter(
+      (forecast: WeatherForecast) => forecast.id !== weatherForecast.id
+    );
+
+    setWeatherForecasts(filteredWeatherForecasts);
+    setIsModalOpen(false);
   };
+
+  const handleUpdateWeatherForecast = async (weatherForecast: WeatherForecast) => {
+    const copyWeatherForecasts = JSON.parse(JSON.stringify(weatherForecasts));
+    const foundWeatherForecastIndex = weatherForecasts.findIndex(
+      (forecast: WeatherForecast) => forecast.id === weatherForecast.id
+    );
+
+    const updatedWeatherForecast = await getWeatherForecast(weatherForecast.name);
+
+    copyWeatherForecasts.splice(foundWeatherForecastIndex, 1, updatedWeatherForecast);
+    setWeatherForecasts(copyWeatherForecasts);
+  };
+
+  const initialLoadWeatherForecasts = async () => {
+    await Promise.all(
+      weatherForecasts.map(async (weatherForecast: WeatherForecast) => {
+        handleUpdateWeatherForecast(weatherForecast);
+      })
+    );
+  };
+
+  useEffect(() => {
+    initialLoadWeatherForecasts();
+  }, []);
 
   return (
     <>
@@ -93,11 +115,12 @@ export default function App() {
         onCloseModal={handleCloseModal}
         selectedWeatherForecast={selectedWeatherForecast}
         onAddWeatherForecast={handleAddWeatherForecast}
-        onDeleteWeatherForecast={handleDeleteWeatherForecast}
       />
       <WeatherForecastsList
-        onSelectWeatherForecast={handleSelectWeatherForecast}
         weatherForecasts={weatherForecasts}
+        onSelectWeatherForecast={handleSelectWeatherForecast}
+        onDeleteWeatherForecast={handleDeleteWeatherForecast}
+        onUpdateWeatherForecast={handleUpdateWeatherForecast}
       />
     </>
   );

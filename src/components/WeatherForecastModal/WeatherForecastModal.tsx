@@ -11,7 +11,6 @@ interface Props {
   onCloseModal: () => void;
   selectedWeatherForecast: WeatherForecast | null;
   onAddWeatherForecast: () => void;
-  onDeleteWeatherForecast: () => void;
 }
 
 const style = {
@@ -31,8 +30,7 @@ export const WeatherForecastModal: React.FC<Props> = ({
   isLoading,
   onCloseModal,
   selectedWeatherForecast,
-  onAddWeatherForecast,
-  onDeleteWeatherForecast
+  onAddWeatherForecast
 }) => {
   return (
     <div>
@@ -73,9 +71,6 @@ export const WeatherForecastModal: React.FC<Props> = ({
               <Typography>Pressure: {selectedWeatherForecast?.main.pressure} hpa</Typography>
               <Button fullWidth onClick={onAddWeatherForecast}>
                 Add
-              </Button>
-              <Button fullWidth onClick={onDeleteWeatherForecast}>
-                Remove
               </Button>
             </>
           )}
