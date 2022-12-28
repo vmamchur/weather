@@ -1,5 +1,4 @@
 import React from 'react';
-import headerImage from '../../assets/images/weather-header.jpg';
 import { createStyles, makeStyles } from '@mui/styles';
 import { SearchBar } from '../SearchBar/SearchBar';
 
@@ -17,7 +16,8 @@ const useStyles = makeStyles(() =>
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'flex-end',
-      backgroundImage: `url(${headerImage})`
+      backgroundColor: 'rgb(34, 44, 255)',
+      background: 'linear-gradient(180deg, rgba(84, 40, 175, 1) 0%, rgba(255, 255, 255, 255) 100%)'
     }
   })
 );

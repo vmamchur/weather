@@ -5,15 +5,22 @@ import { WeatherForecast } from '../../types/WeatherForecast';
 import { WeatherForecastCard } from '../WeatherForecastCard';
 
 interface Props {
+  onSelectWeatherForecast: (weatherForecast: WeatherForecast) => void;
   weatherForecasts: WeatherForecast[];
 }
 
-export const WeatherForecastsList: React.FC<Props> = ({ weatherForecasts }) => (
+export const WeatherForecastsList: React.FC<Props> = ({
+  onSelectWeatherForecast,
+  weatherForecasts
+}) => (
   <Container>
     <Grid sx={{ mb: '60px' }} container spacing={4}>
       {weatherForecasts.map((weatherForecast) => (
-        <Grid item>
-          <WeatherForecastCard key={weatherForecast.id} weatherForecast={weatherForecast} />
+        <Grid item key={weatherForecast.id}>
+          <WeatherForecastCard
+            onSelectWeatherForecast={onSelectWeatherForecast}
+            weatherForecast={weatherForecast}
+          />
         </Grid>
       ))}
     </Grid>

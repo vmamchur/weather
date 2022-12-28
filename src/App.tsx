@@ -16,14 +16,24 @@ export default function App() {
   const handleChangeSearchQuery = useCallback((value: string) => {
     setSearchQuery(value);
   }, []);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleCloseModal = () => setIsModalOpen(false);
+
+  const checkWeatherForecasts = (newWeatherForecast: WeatherForecast) => {
+    return weatherForecasts.some(
+      (weatherForecast: WeatherForecast) => weatherForecast.id === newWeatherForecast.id
+    );
+  };
 
   const handleGetWeatherForecast = async () => {
+    setIsLoading(true);
+    setIsModalOpen(true);
+
     const newWeatherForecast = await getWeatherForecast(searchQuery.trim());
     const isUnsuccessfulRequest =
       newWeatherForecast.cod === '404' || newWeatherForecast.cod === '400';
-    const alreadyExists = weatherForecasts.some(
-      (weatherForecast: WeatherForecast) => weatherForecast.id === newWeatherForecast.id
-    );
 
     setSearchQuery('');
 
@@ -31,15 +41,44 @@ export default function App() {
       return;
     }
 
-    if (alreadyExists) {
-      return;
-    }
-
     setSelectedWeatherForecast(newWeatherForecast);
-    setWeatherForecasts([...weatherForecasts, newWeatherForecast]);
+    setIsLoading(false);
   };
 
-  console.log(selectedWeatherForecast);
+  const handleSelectWeatherForecast = (weatherForecast: WeatherForecast) => {
+    setSelectedWeatherForecast(weatherForecast);
+    setIsModalOpen(true);
+  };
+
+  const handleAddWeatherForecast = () => {
+    if (selectedWeatherForecast) {
+      const alreadyExists = checkWeatherForecasts(selectedWeatherForecast);
+
+      if (alreadyExists) {
+        return;
+      }
+
+      setWeatherForecasts([...weatherForecasts, selectedWeatherForecast]);
+      setIsModalOpen(false);
+    }
+  };
+
+  const handleDeleteWeatherForecast = () => {
+    if (selectedWeatherForecast) {
+      const alreadyExists = checkWeatherForecasts(selectedWeatherForecast);
+
+      if (!alreadyExists) {
+        return;
+      }
+
+      const filteredWeatherForecasts = weatherForecasts.filter(
+        (weatherForecast: WeatherForecast) => weatherForecast.id !== selectedWeatherForecast.id
+      );
+
+      setWeatherForecasts(filteredWeatherForecasts);
+      setIsModalOpen(false);
+    }
+  };
 
   return (
     <>
@@ -48,8 +87,18 @@ export default function App() {
         onChangeSearchQuery={handleChangeSearchQuery}
         onGetWeatherForecast={handleGetWeatherForecast}
       />
-      <WeatherForecastModal />
-      <WeatherForecastsList weatherForecasts={weatherForecasts} />
+      <WeatherForecastModal
+        isModalOpen={isModalOpen}
+        isLoading={isLoading}
+        onCloseModal={handleCloseModal}
+        selectedWeatherForecast={selectedWeatherForecast}
+        onAddWeatherForecast={handleAddWeatherForecast}
+        onDeleteWeatherForecast={handleDeleteWeatherForecast}
+      />
+      <WeatherForecastsList
+        onSelectWeatherForecast={handleSelectWeatherForecast}
+        weatherForecasts={weatherForecasts}
+      />
     </>
   );
 }

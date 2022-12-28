@@ -5,6 +5,7 @@ import { getCurrentDate } from '../../utils/getCurrentDate';
 import { WeatherForecast } from '../../types/WeatherForecast';
 
 interface Props {
+  onSelectWeatherForecast: (weatherForecast: WeatherForecast) => void;
   weatherForecast: WeatherForecast;
 }
 
@@ -26,11 +27,18 @@ const useStyles = makeStyles(() =>
   })
 );
 
-export const WeatherForecastCard: React.FC<Props> = ({ weatherForecast }) => {
+export const WeatherForecastCard: React.FC<Props> = ({
+  onSelectWeatherForecast,
+  weatherForecast
+}) => {
   const { card, cardInner, media } = useStyles();
 
   return (
-    <Card className={card} variant="outlined">
+    <Card
+      className={card}
+      variant="outlined"
+      onClick={() => onSelectWeatherForecast(weatherForecast)}
+    >
       <CardContent style={{ paddingBottom: 0 }}>
         <Box className={cardInner}>
           <Typography variant="h4">{weatherForecast?.name}</Typography>
