@@ -1,6 +1,7 @@
 import React from 'react';
 import { createStyles, makeStyles } from '@mui/styles';
 import { SearchBar } from '../SearchBar/SearchBar';
+import { Typography } from '@mui/material';
 
 interface Props {
   searchQuery: string;
@@ -14,10 +15,9 @@ const useStyles = makeStyles(() =>
       height: '40vh',
       marginBottom: '60px',
       display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'flex-end',
-      backgroundColor: 'rgb(34, 44, 255)',
-      background: 'linear-gradient(180deg, rgba(84, 40, 175, 1) 0%, rgba(255, 255, 255, 255) 100%)'
+      justifyContent: 'flex-end',
+      flexDirection: 'column',
+      alignItems: 'center'
     }
   })
 );

@@ -1,9 +1,13 @@
 import React from 'react';
-import { Button, Modal, Typography } from '@mui/material';
+import { Button, IconButton, Modal, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { WeatherForecast } from '../../types/WeatherForecast';
 import { getCurrentDate } from '../../utils/getCurrentDate';
 import { Loader } from '../Loader';
+import { createStyles, makeStyles } from '@mui/styles';
+import ClearIcon from '@mui/icons-material/Clear';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 
 interface Props {
   isModalOpen: boolean;
@@ -11,7 +15,28 @@ interface Props {
   onCloseModal: () => void;
   selectedWeatherForecast: WeatherForecast | null;
   onAddWeatherForecast: () => void;
+  onDeleteWeatherForecast: (weatherForecast: WeatherForecast) => void;
+  checkWeatherForecasts: (newWeatherForecast: WeatherForecast) => boolean;
 }
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    exit: {
+      position: 'absolute',
+      display: 'block',
+      top: '5px',
+      right: '5px',
+      zIndex: '2'
+    },
+    actionButtons: {
+      position: 'absolute',
+      display: 'flex',
+      gap: '20px',
+      bottom: '36px',
+      zIndex: '2'
+    }
+  })
+);
 
 const style = {
   position: 'absolute',
@@ -22,7 +47,8 @@ const style = {
   height: '60%',
   bgcolor: 'background.paper',
   boxShadow: 24,
-  p: 4
+  p: 4,
+  outline: 0
 };
 
 export const WeatherForecastModal: React.FC<Props> = ({
@@ -30,8 +56,16 @@ export const WeatherForecastModal: React.FC<Props> = ({
   isLoading,
   onCloseModal,
   selectedWeatherForecast,
-  onAddWeatherForecast
+  onAddWeatherForecast,
+  onDeleteWeatherForecast,
+  checkWeatherForecasts
 }) => {
+  const { exit, actionButtons } = useStyles();
+
+  const alreadyExists = selectedWeatherForecast
+    ? checkWeatherForecasts(selectedWeatherForecast)
+    : false;
+
   return (
     <div>
       <Modal
@@ -41,6 +75,12 @@ export const WeatherForecastModal: React.FC<Props> = ({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <Box className={exit}>
+            <IconButton onClick={onCloseModal}>
+              <ClearIcon />
+            </IconButton>
+          </Box>
+
           {isLoading ? (
             <Loader />
           ) : (
@@ -62,16 +102,39 @@ export const WeatherForecastModal: React.FC<Props> = ({
               <Typography variant="h2" mb="10px">
                 {selectedWeatherForecast?.main.temp}°C
               </Typography>
-              <Box mb="50px">
+              <Box mb="20px">
                 <Typography>max. {selectedWeatherForecast?.main.temp_max}°C</Typography>
                 <Typography>min. {selectedWeatherForecast?.main.temp_min}°C</Typography>
               </Box>
               <Typography>Wind: {selectedWeatherForecast?.wind.speed} m/s</Typography>
               <Typography>Humidity: {selectedWeatherForecast?.main.humidity}%</Typography>
               <Typography>Pressure: {selectedWeatherForecast?.main.pressure} hpa</Typography>
-              <Button fullWidth onClick={onAddWeatherForecast}>
-                Add
-              </Button>
+              <Box className={actionButtons}>
+                <Button
+                  size="large"
+                  variant="contained"
+                  onClick={onAddWeatherForecast}
+                  startIcon={<AddIcon />}
+                  disabled={alreadyExists}
+                >
+                  Add
+                </Button>
+
+                <Button
+                  size="large"
+                  variant="contained"
+                  onClick={() => {
+                    if (selectedWeatherForecast) {
+                      onDeleteWeatherForecast(selectedWeatherForecast);
+                    }
+                  }}
+                  startIcon={<DeleteIcon />}
+                  color="error"
+                  disabled={!alreadyExists}
+                >
+                  Delete
+                </Button>
+              </Box>
             </>
           )}
         </Box>

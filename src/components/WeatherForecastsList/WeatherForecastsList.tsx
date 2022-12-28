@@ -1,6 +1,5 @@
 import React from 'react';
-import { Grid } from '@mui/material';
-import { Container } from '@mui/system';
+import { Box, Grid } from '@mui/material';
 import { WeatherForecast } from '../../types/WeatherForecast';
 import { WeatherForecastCard } from '../WeatherForecastCard';
 
@@ -17,18 +16,15 @@ export const WeatherForecastsList: React.FC<Props> = ({
   onDeleteWeatherForecast,
   onUpdateWeatherForecast
 }) => (
-  <Container>
-    <Grid sx={{ mb: '60px' }} container spacing={4}>
-      {weatherForecasts.map((weatherForecast) => (
-        <Grid item key={weatherForecast.id}>
-          <WeatherForecastCard
-            weatherForecast={weatherForecast}
-            onSelectWeatherForecast={onSelectWeatherForecast}
-            onDeleteWeatherForecast={onDeleteWeatherForecast}
-            onUpdateWeatherForecast={onUpdateWeatherForecast}
-          />
-        </Grid>
-      ))}
-    </Grid>
-  </Container>
+  <Grid container spacing={3} pb="40px">
+    {weatherForecasts.map((weatherForecast) => (
+      <WeatherForecastCard
+        key={weatherForecast.id}
+        weatherForecast={weatherForecast}
+        onSelectWeatherForecast={onSelectWeatherForecast}
+        onDeleteWeatherForecast={onDeleteWeatherForecast}
+        onUpdateWeatherForecast={onUpdateWeatherForecast}
+      />
+    ))}
+  </Grid>
 );

@@ -1,6 +1,8 @@
+import { Box, Container } from '@mui/system';
 import React, { useState, useCallback, useEffect } from 'react';
 import { loadWeatherForecast as getWeatherForecast } from './api/weatherForecast';
 import { Header } from './components/Header';
+import { Layout } from './components/Layout';
 import { WeatherForecastModal } from './components/WeatherForecastModal';
 import { WeatherForecastsList } from './components/WeatherForecastsList';
 import { useStorage } from './hooks/useStorage';
@@ -103,7 +105,7 @@ export default function App() {
   }, []);
 
   return (
-    <>
+    <Layout>
       <Header
         searchQuery={searchQuery}
         onChangeSearchQuery={handleChangeSearchQuery}
@@ -115,6 +117,8 @@ export default function App() {
         onCloseModal={handleCloseModal}
         selectedWeatherForecast={selectedWeatherForecast}
         onAddWeatherForecast={handleAddWeatherForecast}
+        onDeleteWeatherForecast={handleDeleteWeatherForecast}
+        checkWeatherForecasts={checkWeatherForecasts}
       />
       <WeatherForecastsList
         weatherForecasts={weatherForecasts}
@@ -122,6 +126,6 @@ export default function App() {
         onDeleteWeatherForecast={handleDeleteWeatherForecast}
         onUpdateWeatherForecast={handleUpdateWeatherForecast}
       />
-    </>
+    </Layout>
   );
 }
