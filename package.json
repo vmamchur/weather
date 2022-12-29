@@ -1,5 +1,6 @@
 {
-  "name": "weather_tt",
+  "name": "weather__tt",
+  "homepage": "https://github.com/vmamchur/weather__tt",
   "version": "5.0.0",
   "private": true,
   "dependencies": {
@@ -12,6 +13,7 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "classnames": "^2.3.2",
+    "gh-pages": "^4.0.0",
     "react": "latest",
     "react-dom": "latest",
     "react-scripts": "latest"
@@ -19,6 +21,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test",
     "lint": "eslint src",
     "lint-fix": "eslint src --quiet --fix"

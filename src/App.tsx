@@ -79,20 +79,23 @@ export default function App() {
     }
   }, [selectedWeatherForecast]);
 
-  const handleDeleteWeatherForecast = useCallback((weatherForecast: WeatherForecast) => {
-    const alreadyExists = checkWeatherForecasts(weatherForecast);
+  const handleDeleteWeatherForecast = useCallback(
+    (weatherForecast: WeatherForecast) => {
+      const alreadyExists = checkWeatherForecasts(weatherForecast);
 
-    if (!alreadyExists) {
-      return;
-    }
+      if (!alreadyExists) {
+        return;
+      }
 
-    const filteredWeatherForecasts = weatherForecasts.filter(
-      (forecast: WeatherForecast) => forecast.id !== weatherForecast.id
-    );
+      const filteredWeatherForecasts = weatherForecasts.filter(
+        (forecast: WeatherForecast) => forecast.id !== weatherForecast.id
+      );
 
-    setWeatherForecasts(filteredWeatherForecasts);
-    setIsModalOpen(false);
-  }, []);
+      setWeatherForecasts(filteredWeatherForecasts);
+      setIsModalOpen(false);
+    },
+    [weatherForecasts]
+  );
 
   const handleUpdateWeatherForecast = useCallback(
     async (weatherForecast: WeatherForecast) => {
