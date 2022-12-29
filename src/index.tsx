@@ -8,7 +8,7 @@ const root = createRoot(rootElement as HTMLElement);
 
 root.render(
   <>
-    <CssBaseline />
     <App />
+    <CssBaseline />
   </>
 );

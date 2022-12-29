@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Box, Card, CardContent, CardMedia, Grid, IconButton, Typography } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
-import { getCurrentDate } from '../../utils/getCurrentDate';
-import { WeatherForecast } from '../../types/WeatherForecast';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RefreshIcon from '@mui/icons-material/Refresh';
+
+import { getCurrentDate } from '../../utils/getCurrentDate';
+import { WeatherForecast } from '../../types/WeatherForecast';
 
 interface Props {
   weatherForecast: WeatherForecast;

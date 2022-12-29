@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Button, IconButton, Modal, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { WeatherForecast } from '../../types/WeatherForecast';
-import { getCurrentDate } from '../../utils/getCurrentDate';
-import { Loader } from '../Loader';
 import { createStyles, makeStyles } from '@mui/styles';
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+
+import { WeatherForecast } from '../../types/WeatherForecast';
+import { getCurrentDate } from '../../utils/getCurrentDate';
+import { Loader } from '../Loader';
 
 interface Props {
   isModalOpen: boolean;
@@ -62,9 +63,10 @@ export const WeatherForecastModal: React.FC<Props> = ({
 }) => {
   const { exit, actionButtons } = useStyles();
 
-  const alreadyExists = selectedWeatherForecast
-    ? checkWeatherForecasts(selectedWeatherForecast)
-    : false;
+  const alreadyExists = useMemo(
+    () => (selectedWeatherForecast ? checkWeatherForecasts(selectedWeatherForecast) : false),
+    [selectedWeatherForecast]
+  );
 
   return (
     <div>

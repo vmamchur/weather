@@ -1,7 +1,9 @@
 import React from 'react';
 import { createStyles, makeStyles } from '@mui/styles';
+import { Box } from '@mui/system';
+
 import { SearchBar } from '../SearchBar/SearchBar';
-import { Typography } from '@mui/material';
+import logo from '../../assets/images/cloud.png';
 
 interface Props {
   searchQuery: string;
@@ -12,7 +14,7 @@ interface Props {
 const useStyles = makeStyles(() =>
   createStyles({
     header: {
-      height: '40vh',
+      height: '50vh',
       marginBottom: '60px',
       display: 'flex',
       justifyContent: 'flex-end',
@@ -31,6 +33,13 @@ export const Header: React.FC<Props> = ({
 
   return (
     <header className={header}>
+      <Box
+        sx={{ transform: 'translateY(40px)' }}
+        component="img"
+        alt="Cloud with sunshine."
+        src={logo}
+      />
+
       <SearchBar
         searchQuery={searchQuery}
         onChangeSearchQuery={onChangeSearchQuery}
