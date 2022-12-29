@@ -1,4 +1,3 @@
-import { Box, Container } from '@mui/system';
 import React, { useState, useCallback, useEffect } from 'react';
 import { loadWeatherForecast as getWeatherForecast } from './api/weatherForecast';
 import { Header } from './components/Header';
