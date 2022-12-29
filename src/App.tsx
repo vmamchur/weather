@@ -93,11 +93,21 @@ export default function App() {
   };
 
   const initialLoadWeatherForecasts = async () => {
+    const copyWeatherForecasts = JSON.parse(JSON.stringify(weatherForecasts));
+
     await Promise.all(
       weatherForecasts.map(async (weatherForecast: WeatherForecast) => {
-        await handleUpdateWeatherForecast(weatherForecast);
+        const foundWeatherForecastIndex = weatherForecasts.findIndex(
+          (forecast: WeatherForecast) => forecast.id === weatherForecast.id
+        );
+
+        const updatedWeatherForecast = await getWeatherForecast(weatherForecast.name);
+
+        copyWeatherForecasts.splice(foundWeatherForecastIndex, 1, updatedWeatherForecast);
       })
     );
+
+    setWeatherForecasts(copyWeatherForecasts);
   };
 
   useEffect(() => {
