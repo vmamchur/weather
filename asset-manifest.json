@@ -1,0 +1,11 @@
+{
+  "files": {
+    "main.js": "/vmamchur/weather__tt/static/js/main.10d6e1f6.js",
+    "static/media/logo.png": "/vmamchur/weather__tt/static/media/logo.5f18707b0f375b6d107e.png",
+    "index.html": "/vmamchur/weather__tt/index.html",
+    "main.10d6e1f6.js.map": "/vmamchur/weather__tt/static/js/main.10d6e1f6.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.10d6e1f6.js"
+  ]
+}
