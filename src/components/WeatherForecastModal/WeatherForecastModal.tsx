@@ -74,7 +74,7 @@ export const WeatherForecastModal: React.FC<Props> = ({
 
   const alreadyExists = useMemo(
     () => (selectedWeatherForecast ? checkWeatherForecasts(selectedWeatherForecast) : false),
-    [selectedWeatherForecast]
+    [selectedWeatherForecast, checkWeatherForecasts]
   );
 
   return (

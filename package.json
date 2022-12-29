@@ -1,6 +1,6 @@
 {
-  "name": "weather__tt",
-  "homepage": "https://github.com/vmamchur/weather__tt",
+  "name": "weather",
+  "homepage": "https://vmamchur.github.io/weather",
   "version": "5.0.0",
   "private": true,
   "dependencies": {
