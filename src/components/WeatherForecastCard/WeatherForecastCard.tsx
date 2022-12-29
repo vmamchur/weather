@@ -50,43 +50,41 @@ export const WeatherForecastCard: React.FC<Props> = ({
   const { card, buttons, media } = useStyles();
 
   return (
-    <Grid item>
-      <Card
-        onMouseEnter={() => setIsFocusing(true)}
-        onMouseLeave={() => setIsFocusing(false)}
-        className={card}
-        style={{ transition: 'transform 0.3s ease' }}
-        variant="outlined"
-      >
-        {isFocusing && (
-          <Box className={buttons}>
-            <IconButton onClick={() => onDeleteWeatherForecast(weatherForecast)}>
-              <DeleteIcon />
-            </IconButton>
+    <Card
+      onMouseEnter={() => setIsFocusing(true)}
+      onMouseLeave={() => setIsFocusing(false)}
+      className={card}
+      style={{ transition: 'transform 0.3s ease' }}
+      variant="outlined"
+    >
+      {isFocusing && (
+        <Box className={buttons}>
+          <IconButton onClick={() => onDeleteWeatherForecast(weatherForecast)}>
+            <DeleteIcon />
+          </IconButton>
 
-            <IconButton onClick={() => onUpdateWeatherForecast(weatherForecast)}>
-              <RefreshIcon />
-            </IconButton>
-          </Box>
-        )}
-        <CardContent
-          style={{ paddingBottom: 0 }}
-          onClick={() => onSelectWeatherForecast(weatherForecast)}
-        >
-          <Box display="flex" alignItems="center" justifyContent="space-between">
-            <Typography variant="h4">{weatherForecast?.name}</Typography>
-            {!isFocusing && <Typography>{weatherForecast?.sys.country}</Typography>}
-          </Box>
-          <Typography>{getCurrentDate()}</Typography>
-          <Box display="flex" alignItems="center" justifyContent="space-between">
-            <CardMedia
-              className={media}
-              image={`https://openweathermap.org/img/wn/${weatherForecast?.weather[0].icon}@2x.png`}
-            ></CardMedia>
-            <Typography variant="h2">{weatherForecast?.main.temp}°C</Typography>
-          </Box>
-        </CardContent>
-      </Card>
-    </Grid>
+          <IconButton onClick={() => onUpdateWeatherForecast(weatherForecast)}>
+            <RefreshIcon />
+          </IconButton>
+        </Box>
+      )}
+      <CardContent
+        style={{ paddingBottom: 0 }}
+        onClick={() => onSelectWeatherForecast(weatherForecast)}
+      >
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Typography variant="h4">{weatherForecast?.name}</Typography>
+          {!isFocusing && <Typography>{weatherForecast?.sys.country}</Typography>}
+        </Box>
+        <Typography>{getCurrentDate()}</Typography>
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <CardMedia
+            className={media}
+            image={`https://openweathermap.org/img/wn/${weatherForecast?.weather[0].icon}@2x.png`}
+          ></CardMedia>
+          <Typography variant="h2">{weatherForecast?.main.temp}°C</Typography>
+        </Box>
+      </CardContent>
+    </Card>
   );
 };

@@ -19,13 +19,14 @@ export const WeatherForecastsList: React.FC<Props> = ({
 }) => (
   <Grid container spacing={3} pb="40px">
     {weatherForecasts.map((weatherForecast) => (
-      <WeatherForecastCard
-        key={weatherForecast.id}
-        weatherForecast={weatherForecast}
-        onSelectWeatherForecast={onSelectWeatherForecast}
-        onDeleteWeatherForecast={onDeleteWeatherForecast}
-        onUpdateWeatherForecast={onUpdateWeatherForecast}
-      />
+      <Grid item key={weatherForecast.id}>
+        <WeatherForecastCard
+          weatherForecast={weatherForecast}
+          onSelectWeatherForecast={onSelectWeatherForecast}
+          onDeleteWeatherForecast={onDeleteWeatherForecast}
+          onUpdateWeatherForecast={onUpdateWeatherForecast}
+        />
+      </Grid>
     ))}
   </Grid>
 );
