@@ -3,7 +3,7 @@ import { createStyles, makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 
 import { SearchBar } from '../SearchBar/SearchBar';
-import logo from '../../assets/images/cloud.png';
+import logo from '../../assets/images/logo.png';
 
 interface Props {
   searchQuery: string;
