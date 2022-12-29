@@ -7,6 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 
 import { WeatherForecast } from '../../types/WeatherForecast';
+import { Error } from '../../types/Error';
 import { getCurrentDate } from '../../utils/getCurrentDate';
 import { Loader } from '../Loader';
 
@@ -18,6 +19,7 @@ interface Props {
   onAddWeatherForecast: () => void;
   onDeleteWeatherForecast: (weatherForecast: WeatherForecast) => void;
   checkWeatherForecasts: (newWeatherForecast: WeatherForecast) => boolean;
+  error: Error;
 }
 
 const useStyles = makeStyles(() =>
@@ -35,6 +37,12 @@ const useStyles = makeStyles(() =>
       gap: '20px',
       bottom: '36px',
       zIndex: '2'
+    },
+    errorNotification: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)'
     }
   })
 );
@@ -59,9 +67,10 @@ export const WeatherForecastModal: React.FC<Props> = ({
   selectedWeatherForecast,
   onAddWeatherForecast,
   onDeleteWeatherForecast,
-  checkWeatherForecasts
+  checkWeatherForecasts,
+  error
 }) => {
-  const { exit, actionButtons } = useStyles();
+  const { exit, actionButtons, errorNotification } = useStyles();
 
   const alreadyExists = useMemo(
     () => (selectedWeatherForecast ? checkWeatherForecasts(selectedWeatherForecast) : false),
@@ -85,6 +94,10 @@ export const WeatherForecastModal: React.FC<Props> = ({
 
           {isLoading ? (
             <Loader />
+          ) : error.status ? (
+            <Typography className={errorNotification} variant="h5">
+              {error.message}
+            </Typography>
           ) : (
             <>
               <Box display="flex" alignItems="center" justifyContent="space-between" mb="-40px">

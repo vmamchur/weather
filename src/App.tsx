@@ -1,10 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { loadWeatherForecast as getWeatherForecast } from './api/weatherForecast';
+
+import { loadWeatherForecast } from './api/weatherForecast';
 import { Header } from './components/Header';
 import { Layout } from './components/Layout';
 import { WeatherForecastModal } from './components/WeatherForecastModal';
 import { WeatherForecastsList } from './components/WeatherForecastsList';
 import { useStorage } from './hooks/useStorage';
+import { Error } from './types/Error';
 import { WeatherForecast } from './types/WeatherForecast';
 
 export default function App() {
@@ -13,10 +15,18 @@ export default function App() {
     null
   );
   const [searchQuery, setSearchQuery] = useState('');
+  const [error, setError] = useState<Error>({
+    status: false,
+    message: ''
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleCloseModal = useCallback(() => setIsModalOpen(false), []);
+  const handleCloseModal = useCallback(() => {
+    setIsModalOpen(false);
+    setSelectedWeatherForecast(null);
+    setError({ status: false, message: '' });
+  }, []);
 
   const checkWeatherForecasts = useCallback(
     (newWeatherForecast: WeatherForecast) => {
@@ -32,18 +42,20 @@ export default function App() {
   }, []);
 
   const handleGetWeatherForecast = useCallback(async () => {
-    const newWeatherForecast = await getWeatherForecast(searchQuery.trim());
+    setIsLoading(true);
+    setIsModalOpen(true);
+    const newWeatherForecast = await loadWeatherForecast(searchQuery.trim());
     const isUnsuccessfulRequest =
       newWeatherForecast.cod === '404' || newWeatherForecast.cod === '400';
 
     setSearchQuery('');
 
     if (isUnsuccessfulRequest) {
+      setIsLoading(false);
+      setError({ status: true, message: 'Incorrect city name 😥' });
+
       return;
     }
-
-    setIsLoading(true);
-    setIsModalOpen(true);
 
     setSelectedWeatherForecast(newWeatherForecast);
     setIsLoading(false);
@@ -89,7 +101,7 @@ export default function App() {
         (forecast: WeatherForecast) => forecast.id === weatherForecast.id
       );
 
-      const updatedWeatherForecast = await getWeatherForecast(weatherForecast.name);
+      const updatedWeatherForecast = await loadWeatherForecast(weatherForecast.name);
 
       copyWeatherForecasts.splice(foundWeatherForecastIndex, 1, updatedWeatherForecast);
       setWeatherForecasts(copyWeatherForecasts);
@@ -106,7 +118,7 @@ export default function App() {
           (forecast: WeatherForecast) => forecast.id === weatherForecast.id
         );
 
-        const updatedWeatherForecast = await getWeatherForecast(weatherForecast.name);
+        const updatedWeatherForecast = await loadWeatherForecast(weatherForecast.name);
 
         copyWeatherForecasts.splice(foundWeatherForecastIndex, 1, updatedWeatherForecast);
       })
@@ -134,6 +146,7 @@ export default function App() {
         onAddWeatherForecast={handleAddWeatherForecast}
         onDeleteWeatherForecast={handleDeleteWeatherForecast}
         checkWeatherForecasts={checkWeatherForecasts}
+        error={error}
       />
       <WeatherForecastsList
         weatherForecasts={weatherForecasts}
