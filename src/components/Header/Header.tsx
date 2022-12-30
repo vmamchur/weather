@@ -14,7 +14,6 @@ interface Props {
 const useStyles = makeStyles(() =>
   createStyles({
     header: {
-      height: '50vh',
       marginBottom: '60px',
       display: 'flex',
       justifyContent: 'flex-end',
@@ -33,12 +32,7 @@ export const Header: React.FC<Props> = ({
 
   return (
     <header className={header}>
-      <Box
-        sx={{ transform: 'translateY(40px)' }}
-        component="img"
-        alt="Cloud with sunshine."
-        src={logo}
-      />
+      <Box component="img" alt="Cloud with sunshine." src={logo} />
 
       <SearchBar
         searchQuery={searchQuery}

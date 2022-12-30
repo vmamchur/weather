@@ -32,10 +32,8 @@ const useStyles = makeStyles(() =>
       zIndex: '2'
     },
     actionButtons: {
-      position: 'absolute',
       display: 'flex',
       gap: '20px',
-      bottom: '36px',
       zIndex: '2'
     },
     errorNotification: {
@@ -48,12 +46,11 @@ const useStyles = makeStyles(() =>
 );
 
 const style = {
-  position: 'absolute',
+  position: 'relative',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '60%',
-  height: '60%',
   bgcolor: '#fff',
   boxShadow: 24,
   p: 4,
@@ -114,16 +111,20 @@ export const WeatherForecastModal: React.FC<Props> = ({
               <Typography id="modal-modal-description" variant="h5" mb="50px">
                 {getCurrentDate()}
               </Typography>
-              <Typography variant="h2" mb="10px">
+              <Typography variant="h2" mb="20px">
                 {selectedWeatherForecast?.main.temp}°C
               </Typography>
-              <Box mb="20px">
-                <Typography>max. {selectedWeatherForecast?.main.temp_max}°C</Typography>
-                <Typography>min. {selectedWeatherForecast?.main.temp_min}°C</Typography>
+              <Box display="flex" justifyContent="space-between" mb="50px">
+                <Box>
+                  <Typography>max. {selectedWeatherForecast?.main.temp_max}°C</Typography>
+                  <Typography>min. {selectedWeatherForecast?.main.temp_min}°C</Typography>
+                </Box>
+                <Box>
+                  <Typography>Wind: {selectedWeatherForecast?.wind.speed} m/s</Typography>
+                  <Typography>Humidity: {selectedWeatherForecast?.main.humidity}%</Typography>
+                  <Typography>Pressure: {selectedWeatherForecast?.main.pressure} hpa</Typography>
+                </Box>
               </Box>
-              <Typography>Wind: {selectedWeatherForecast?.wind.speed} m/s</Typography>
-              <Typography>Humidity: {selectedWeatherForecast?.main.humidity}%</Typography>
-              <Typography>Pressure: {selectedWeatherForecast?.main.pressure} hpa</Typography>
               <Box className={actionButtons}>
                 <Button
                   size="large"
