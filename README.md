@@ -1,5 +1,5 @@
 # Weather Web App
-- [DEMO LINK](https://vmamchur.github.io/weather/)
+- [DEMO LINK](https://vmamchur.github.io/weather-web-app/)
 
 ## Technologies:
 - React.js
