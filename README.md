@@ -1,4 +1,4 @@
-# Weather
+# Weather Web App
 - [DEMO LINK](https://vmamchur.github.io/weather/)
 
 ## Technologies:
